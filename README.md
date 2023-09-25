@@ -47,15 +47,15 @@ full_optimized = t.load("VIRTUAL_TOKENS.pt").detach()
 
 
 ```python
-hateful_or_effensive = tokenizer.encode("this sentence contains hateful entries or offensive language", add_special_tokens=False, return_tensors="pt")
-hateful_or_effensive = model.cuda().base_model.embeddings.word_embeddings(hateful_or_effensive.cuda()).reshape([-1, 1024])
+hateful_or_offensive = tokenizer.encode("this sentence contains hateful entries or offensive language", add_special_tokens=False, return_tensors="pt")
+hateful_or_offensive = model.cuda().base_model.embeddings.word_embeddings(hateful_or_offensive.cuda()).reshape([-1, 1024])
 
 # Insert hateful optimized token
-hateful_or_effensive[3] = full_optimized[3]
+hateful_or_offensive[3] = full_optimized[3]
 # Insert or optimized token
-hateful_or_effensive[5] = full_optimized[5]
+hateful_or_offensive[5] = full_optimized[5]
 # Insert offensive optimized token
-hateful_or_effensive[6] = full_optimized[6]
+hateful_or_offensive[6] = full_optimized[6]
 ```
 
 
@@ -111,7 +111,7 @@ test_sentences = [
 for test_sentence in test_sentences:
 
     for hypo in zip([full_optimized, 
-                     hateful_or_effensive,
+                     hateful_or_offensive,
                      pure_hypothesis1, 
                      pure_hypothesis2],
                     ["full_optimized",
