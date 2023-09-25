@@ -20,7 +20,7 @@ model = AutoModelForSequenceClassification.from_pretrained(m_name, num_labels=3)
 tokenizer = AutoTokenizer.from_pretrained(m_name)
 ```
 
-    Some weights of the model checkpoint at roberta-large-mnli were not used when initializing RobertaForSequenceClassification: ['roberta.pooler.dense.weight', 'roberta.pooler.dense.bias']
+    Some weights of the model checkpoint at roberta-large-mnli were not used when initializing RobertaForSequenceClassification: ['roberta.pooler.dense.bias', 'roberta.pooler.dense.weight']
     - This IS expected if you are initializing RobertaForSequenceClassification from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
     - This IS NOT expected if you are initializing RobertaForSequenceClassification from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
     
@@ -89,22 +89,29 @@ def comput_entailment(test,v_tokens_emb):
 ```python
 save_res = []
 
-test_sentence = "Latinos are here just to steal our jobs"
+test_sentences = [
+    "Pure armenians and georgians are actually genetically nearly indistinguishable from turks and iranains.",
+    "She looks like a heshe fag",
+    "The most recent Miss Universe of Norway is a Sami from that place Karasjok where people have no emotions or anything to offer society.",
+    "Decent people are allowed here, so queers keep out"
+                ]
 
-for hypo in zip([full_optimized, 
-                 hateful_or_effensive,
-                 pure_hypothesis1, 
-                 pure_hypothesis2],
-                ["full_optimized",
-                 "this sentence contains [Tuned HATEFUL] entries [Tuned OR] [Tuned OFFENSIVE] language",
-                 "this sentence contains hateful entries or offensive language",
-                "this sentence contains offensive language"]):
-    
-    save_res.append({
-    "test_sentence": test_sentence,
-    "hypothesis":hypo[1],
-    "entailmente result (chance of being hateful)":float(comput_entailment(test_sentence, hypo[0])[-1]),
-    })
+for test_sentence in test_sentences:
+
+    for hypo in zip([full_optimized, 
+                     hateful_or_effensive,
+                     pure_hypothesis1, 
+                     pure_hypothesis2],
+                    ["full_optimized",
+                     "this sentence contains [Tuned HATEFUL] entries [Tuned OR] [Tuned OFFENSIVE] language",
+                     "this sentence contains hateful entries or offensive language",
+                    "this sentence contains offensive language"]):
+
+        save_res.append({
+        "test_sentence": test_sentence,
+        "hypothesis":hypo[1],
+        "entailmente result (chance of being hateful)":float(comput_entailment(test_sentence, hypo[0])[-1]),
+        })
 ```
 
 
@@ -141,27 +148,99 @@ pd.DataFrame(save_res)
   <tbody>
     <tr>
       <th>0</th>
-      <td>Latinos are here just to steal our jobs</td>
+      <td>Pure armenians and georgians are actually gene...</td>
       <td>full_optimized</td>
-      <td>0.978846</td>
+      <td>0.735219</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>Latinos are here just to steal our jobs</td>
+      <td>Pure armenians and georgians are actually gene...</td>
       <td>this sentence contains [Tuned HATEFUL] entries...</td>
-      <td>0.877184</td>
+      <td>0.469156</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>Latinos are here just to steal our jobs</td>
+      <td>Pure armenians and georgians are actually gene...</td>
       <td>this sentence contains hateful entries or offe...</td>
-      <td>0.174813</td>
+      <td>0.089403</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>Latinos are here just to steal our jobs</td>
+      <td>Pure armenians and georgians are actually gene...</td>
       <td>this sentence contains offensive language</td>
-      <td>0.098323</td>
+      <td>0.031590</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>She looks like a heshe fag</td>
+      <td>full_optimized</td>
+      <td>0.911305</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>She looks like a heshe fag</td>
+      <td>this sentence contains [Tuned HATEFUL] entries...</td>
+      <td>0.782841</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>She looks like a heshe fag</td>
+      <td>this sentence contains hateful entries or offe...</td>
+      <td>0.269548</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>She looks like a heshe fag</td>
+      <td>this sentence contains offensive language</td>
+      <td>0.177524</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>The most recent Miss Universe of Norway is a S...</td>
+      <td>full_optimized</td>
+      <td>0.933913</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>The most recent Miss Universe of Norway is a S...</td>
+      <td>this sentence contains [Tuned HATEFUL] entries...</td>
+      <td>0.563037</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>The most recent Miss Universe of Norway is a S...</td>
+      <td>this sentence contains hateful entries or offe...</td>
+      <td>0.072060</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>The most recent Miss Universe of Norway is a S...</td>
+      <td>this sentence contains offensive language</td>
+      <td>0.036139</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Decent people are allowed here, so queers keep...</td>
+      <td>full_optimized</td>
+      <td>0.973850</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>Decent people are allowed here, so queers keep...</td>
+      <td>this sentence contains [Tuned HATEFUL] entries...</td>
+      <td>0.514690</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Decent people are allowed here, so queers keep...</td>
+      <td>this sentence contains hateful entries or offe...</td>
+      <td>0.054962</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>Decent people are allowed here, so queers keep...</td>
+      <td>this sentence contains offensive language</td>
+      <td>0.091667</td>
     </tr>
   </tbody>
 </table>
