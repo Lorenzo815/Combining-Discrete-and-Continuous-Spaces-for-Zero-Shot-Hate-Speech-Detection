@@ -1,3 +1,15 @@
+This repository accompanies the article titled "Tuning Hypothesis Creation: Combining Discrete and Continuous Spaces for Zero-Shot Hate Speech Detection." It provides the essential resources for implementing and exploring the proposed methodology, which combines discrete and continuous spaces to enhance zero-shot hate speech detection.
+
+# Pretrained Weights for Virtual Tokens:
+
+This section of the repository includes pretrained weights for virtual tokens. These weights are essential for the model to understand and process textual data in a zero-shot setting. They have been fine-tuned to excel in hate speech detection tasks.
+
+# Jupyter Notebook:
+
+The repository includes a detailed Jupyter notebook that serves as a comprehensive guide for users. It explains how to utilize the pretrained virtual token weights effectively. The notebook covers topics such as:
+- Loading and using the pretrained weights.
+- Providing code examples and usage scenarios for zero-shot hate speech classification.
+
 # Imports
 
 
