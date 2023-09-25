@@ -32,7 +32,7 @@ model = AutoModelForSequenceClassification.from_pretrained(m_name, num_labels=3)
 tokenizer = AutoTokenizer.from_pretrained(m_name)
 ```
 
-    Some weights of the model checkpoint at roberta-large-mnli were not used when initializing RobertaForSequenceClassification: ['roberta.pooler.dense.bias', 'roberta.pooler.dense.weight']
+    Some weights of the model checkpoint at roberta-large-mnli were not used when initializing RobertaForSequenceClassification: ['roberta.pooler.dense.weight', 'roberta.pooler.dense.bias']
     - This IS expected if you are initializing RobertaForSequenceClassification from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
     - This IS NOT expected if you are initializing RobertaForSequenceClassification from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
     
@@ -130,7 +130,7 @@ for test_sentence in test_sentences:
 
 
 ```python
-pd.DataFrame(save_res)
+pd.DataFrame(save_res).pivot(index="test_sentence",columns=["hypothesis"],values="entailmente result (chance of being hateful)")
 ```
 
 
@@ -153,108 +153,48 @@ pd.DataFrame(save_res)
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
-      <th></th>
-      <th>test_sentence</th>
       <th>hypothesis</th>
-      <th>entailmente result (chance of being hateful)</th>
+      <th>full_optimized</th>
+      <th>this sentence contains [Tuned HATEFUL] entries [Tuned OR] [Tuned OFFENSIVE] language</th>
+      <th>this sentence contains hateful entries or offensive language</th>
+      <th>this sentence contains offensive language</th>
+    </tr>
+    <tr>
+      <th>test_sentence</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>0</th>
-      <td>Pure armenians and georgians are actually gene...</td>
-      <td>full_optimized</td>
+      <th>Decent people are allowed here, so queers keep out</th>
+      <td>0.973850</td>
+      <td>0.514690</td>
+      <td>0.054962</td>
+      <td>0.091667</td>
+    </tr>
+    <tr>
+      <th>Pure armenians and georgians are actually genetically nearly indistinguishable from turks and iranains.</th>
       <td>0.735219</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Pure armenians and georgians are actually gene...</td>
-      <td>this sentence contains [Tuned HATEFUL] entries...</td>
       <td>0.469156</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Pure armenians and georgians are actually gene...</td>
-      <td>this sentence contains hateful entries or offe...</td>
       <td>0.089403</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>Pure armenians and georgians are actually gene...</td>
-      <td>this sentence contains offensive language</td>
       <td>0.031590</td>
     </tr>
     <tr>
-      <th>4</th>
-      <td>She looks like a heshe fag</td>
-      <td>full_optimized</td>
+      <th>She looks like a heshe fag</th>
       <td>0.911305</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>She looks like a heshe fag</td>
-      <td>this sentence contains [Tuned HATEFUL] entries...</td>
       <td>0.782841</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>She looks like a heshe fag</td>
-      <td>this sentence contains hateful entries or offe...</td>
       <td>0.269548</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>She looks like a heshe fag</td>
-      <td>this sentence contains offensive language</td>
       <td>0.177524</td>
     </tr>
     <tr>
-      <th>8</th>
-      <td>The most recent Miss Universe of Norway is a S...</td>
-      <td>full_optimized</td>
+      <th>The most recent Miss Universe of Norway is a Sami from that place Karasjok where people have no emotions or anything to offer society.</th>
       <td>0.933913</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>The most recent Miss Universe of Norway is a S...</td>
-      <td>this sentence contains [Tuned HATEFUL] entries...</td>
       <td>0.563037</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>The most recent Miss Universe of Norway is a S...</td>
-      <td>this sentence contains hateful entries or offe...</td>
       <td>0.072060</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>The most recent Miss Universe of Norway is a S...</td>
-      <td>this sentence contains offensive language</td>
       <td>0.036139</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>Decent people are allowed here, so queers keep...</td>
-      <td>full_optimized</td>
-      <td>0.973850</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>Decent people are allowed here, so queers keep...</td>
-      <td>this sentence contains [Tuned HATEFUL] entries...</td>
-      <td>0.514690</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>Decent people are allowed here, so queers keep...</td>
-      <td>this sentence contains hateful entries or offe...</td>
-      <td>0.054962</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>Decent people are allowed here, so queers keep...</td>
-      <td>this sentence contains offensive language</td>
-      <td>0.091667</td>
     </tr>
   </tbody>
 </table>
